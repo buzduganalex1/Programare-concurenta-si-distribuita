@@ -1,7 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using TcpUdp.Core;
 
 namespace TcpUdp.Server
 {
@@ -9,31 +16,77 @@ namespace TcpUdp.Server
     {
         static void Main(string[] args)
         {
-            TcpListener server = new TcpListener(IPAddress.Any, 9999);
-            // we set our IP address as server's address, and we also set the port: 9999
+            var protocol = "TCP";
+            
+            var server = new TcpListener(IPAddress.Any, 9999);
 
-            server.Start();  // this will start the server
+            server.Start();
 
-            while (true)   //we wait for a connection
+            Console.WriteLine("Hello");
+
+            while (true)
             {
-                TcpClient client = server.AcceptTcpClient();  //if a connection exists, the server will accept it
-
-                NetworkStream ns = client.GetStream(); //networkstream is used to send/receive messages
-
-                byte[] hello = new byte[100];   //any message must be serialized (converted to byte array)
-                hello = Encoding.Default.GetBytes("hello world");  //conversion string => byte array
-
-                ns.Write(hello, 0, hello.Length);     //sending the message
-
-                while (client.Connected)  //while the client is connected, we look for incoming messages
+                try
                 {
-                    byte[] msg = new byte[1024];     //the messages arrive as byte array
+                    var client = server.AcceptTcpClient();
 
-                    ns.Read(msg, 0, msg.Length);   //the same networkstream reads the message sent by the client
+                    var networkStream = client.GetStream();
 
-                    Console.WriteLine(Encoding.Default.GetString(msg)); //now , we write the message as string
+                    var myReadBuffer = new byte[1024];
+
+                    var numberOfMessages = 0;
+                    
+                    Console.WriteLine(client.Connected);
+
+                    while (client.Connected)
+                    {
+                        if (networkStream.CanRead)
+                        {
+                            if (networkStream.DataAvailable)
+                            {
+                                var result = new List<byte>();
+
+                                while (networkStream.Read(myReadBuffer, 0, myReadBuffer.Length) > 0)
+                                {
+                                    result.AddRange(myReadBuffer);
+
+                                    numberOfMessages++;
+                                }
+                                
+                                var file = ByteArrayToObject(result.ToArray()) as FileMessage;
+
+                                if (file != null)
+                                {
+                                    var path = @"..\..\..\Resources\" + file.Name + "." + file.Format;
+
+                                    File.WriteAllBytes(path, file.Data);
+
+                                    Console.WriteLine($"Number of packages: {numberOfMessages}");
+                                    Console.WriteLine($"Number of bytes read: {result.Count}");
+                                    Console.WriteLine($"{file.Name} + {file.Format}");
+                                }
+
+                                Console.WriteLine("test");
+                            }
+                        }
+                    }
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }            
             }
+        }
+
+        private static Object ByteArrayToObject(byte[] arrBytes)
+        {
+            MemoryStream memStream = new MemoryStream();
+            BinaryFormatter binForm = new BinaryFormatter();
+            memStream.Write(arrBytes, 0, arrBytes.Length);
+            memStream.Seek(0, SeekOrigin.Begin);
+            Object obj = (Object)binForm.Deserialize(memStream);
+            return obj;
         }
     }
 }
+

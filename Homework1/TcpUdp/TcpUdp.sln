@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpUdp.Server", "TcpUdp.Ser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpUdp.Client", "TcpUdp.Client\TcpUdp.Client.csproj", "{A76D8269-C2A9-43B2-941B-A650411CE1AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpUdp.Core", "TcpUdp.Core\TcpUdp.Core.csproj", "{0A0D7B5D-BC89-43AE-A4A7-44FE698064E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A76D8269-C2A9-43B2-941B-A650411CE1AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A76D8269-C2A9-43B2-941B-A650411CE1AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A76D8269-C2A9-43B2-941B-A650411CE1AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A0D7B5D-BC89-43AE-A4A7-44FE698064E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A0D7B5D-BC89-43AE-A4A7-44FE698064E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A0D7B5D-BC89-43AE-A4A7-44FE698064E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A0D7B5D-BC89-43AE-A4A7-44FE698064E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
