@@ -28,46 +28,80 @@ namespace TcpUdp.Server
             {
                 try
                 {
-                    var client = server.AcceptTcpClient();
+                    var client = server.AcceptTcpClientAsync().Result;
 
-                    var networkStream = client.GetStream();
-
-                    var myReadBuffer = new byte[1024];
-
-                    var numberOfMessages = 0;
-                    
-                    Console.WriteLine(client.Connected);
-
-                    while (client.Connected)
+                    using (var stream = client.GetStream())
                     {
-                        if (networkStream.CanRead)
+                        Console.WriteLine(client.Connected);
+
+                        while (client.Connected)
                         {
-                            if (networkStream.DataAvailable)
+                            if (stream.CanRead)
                             {
-                                var result = new List<byte>();
-
-                                while (networkStream.Read(myReadBuffer, 0, myReadBuffer.Length) > 0)
+                                if (stream.DataAvailable)
                                 {
-                                    result.AddRange(myReadBuffer);
+                                    Console.WriteLine("Start");
 
-                                    numberOfMessages++;
+                                    while (stream.DataAvailable)
+                                    {
+                                        var result = new List<byte>();
+
+                                        var myReadBuffer = new byte[65535];
+
+                                        var count = new byte[4];
+
+                                        var numberOfMessages = 0;
+
+                                        var size = stream.ReadAsync(count, 0, 4).Result;
+
+                                        int i = BitConverter.ToInt32(count, 0);
+
+                                        while (result.Count < i)
+                                        {
+                                            var test2 = stream.ReadAsync(myReadBuffer, 0, myReadBuffer.Length).Result;
+
+                                            result.AddRange(myReadBuffer);
+
+                                            numberOfMessages++;
+                                        }
+
+                                        try
+                                        {
+                                            var file = ByteArrayToObject(result.ToArray()) as FileMessage;
+
+                                            if (file != null)
+                                            {
+                                                var path = @"..\..\..\Resources\" + file.Name + "." + file.Format;
+
+                                                File.WriteAllBytes(path, file.Data);
+
+                                                Console.WriteLine($"Number of packages: {numberOfMessages}");
+                                                Console.WriteLine($"Number of bytes read: {result.Count}");
+                                                Console.WriteLine($"{file.Name} + {file.Format}");
+                                            }
+
+                                            Console.WriteLine("Done");
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Console.WriteLine(e);
+                                        }
+                                    }
                                 }
-                                
-                                var file = ByteArrayToObject(result.ToArray()) as FileMessage;
-
-                                if (file != null)
+                                else
                                 {
-                                    var path = @"..\..\..\Resources\" + file.Name + "." + file.Format;
+                                    if (client.Client.Poll(0, SelectMode.SelectRead))
+                                    {
+                                        System.Threading.Thread.Sleep(50);
+                                    }
 
-                                    File.WriteAllBytes(path, file.Data);
-
-                                    Console.WriteLine($"Number of packages: {numberOfMessages}");
-                                    Console.WriteLine($"Number of bytes read: {result.Count}");
-                                    Console.WriteLine($"{file.Name} + {file.Format}");
+                                    if (client.Client.Poll(0, SelectMode.SelectRead))
+                                    {
+                                        client.Dispose();
+                                    }
                                 }
-
-                                Console.WriteLine("test");
                             }
+
                         }
                     }
                 }

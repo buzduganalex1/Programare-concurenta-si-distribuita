@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using System.Threading.Tasks;
 using TcpUdp.Core;
 
 namespace TcpUdp.Client
@@ -14,55 +18,76 @@ namespace TcpUdp.Client
         {
             const int port = 9999;
 
+            var maxMessageSize = 65535;
+            
             try
             {
-                var client = new TcpClient("localhost", port);
-
-                var stream = client.GetStream();
-
-                var path = @"..\..\..\Resources\";
-
-                var files = Directory.GetFiles(path);
-
-                foreach (var file in files)
+                using (var client = new TcpClient("localhost", port))
                 {
-                    var fileName = Path.GetFileName(file);
+                    var stream = client.GetStream();
 
-                    var format = fileName.Split('.')[1];
+                    var path = @"..\..\..\Resources\";
 
-                    var name = fileName.Split('.')[0];
+                    var files = Directory.GetFiles(path);
 
-                    var fileMessage = new FileMessage
+                    foreach (var file in files)
                     {
-                        Name = name,
-                        Format = format,
-                        Data = File.ReadAllBytesAsync($"{path}{name}.{format}").Result
-                    };
-                    
-                    var message = ObjectToByteArray(fileMessage);
+                        var fileName = Path.GetFileName(file);
 
-                    var sw = new Stopwatch();
+                        var format = fileName.Split('.')[1];
 
-                    var transmissionTime = DateTime.Now;
+                        var name = fileName.Split('.')[0];
 
-                    var bytesSent = message.Length;
+                        var fileMessage = new FileMessage
+                        {
+                            Name = name,
+                            Format = format,
+                            Data = File.ReadAllBytesAsync($"{path}{name}.{format}").Result
+                        };
 
-                    var sentMessages = 1;
+                        var arrayOfBytesObject = ObjectToByteArray(fileMessage);
 
-                    sw.Start();
+                        var test2 = Split(arrayOfBytesObject, maxMessageSize);
 
-                    stream.Write(message, 0, message.Length);
+                        var sizeOfMessage = arrayOfBytesObject.Length;
 
-                    sw.Stop();
+                        var count = new byte[4];
 
-                    Console.WriteLine(
-                        $"TransmissionTime: {transmissionTime} \nNumber of messages sent: {sentMessages} \nNumber of bytes sent: {bytesSent}");
+                        count = BitConverter.GetBytes(sizeOfMessage);
 
-                }
-                
-                stream.Close();
+                        var sw = new Stopwatch();
 
-                client.Close();
+                        var transmissionTime = DateTime.Now;
+
+                        var bytesSent = arrayOfBytesObject.Length;
+
+                        stream.Write(count, 0, count.Length);
+
+                        foreach (var testMessage in test2)
+                        {
+                            sw.Start();
+
+                            Console.WriteLine("Start");
+
+                            stream.Write(testMessage, 0, testMessage.Length);
+
+                            System.Threading.Thread.Sleep(50);
+
+                            sw.Stop();
+
+                            Console.WriteLine(
+                                $"TransmissionTime: {transmissionTime} \nNumber of bytes sent: {bytesSent}");
+                        }
+
+                        var buffer = new byte[1024];
+
+                        Console.WriteLine(Encoding.UTF8.GetString(buffer));
+                    }
+
+                    client.GetStream().Close();
+
+                    client.Close();
+                }    
             }
             catch (ArgumentNullException e)
             {
@@ -85,6 +110,18 @@ namespace TcpUdp.Client
             MemoryStream ms = new MemoryStream();
             bf.Serialize(ms, obj);
             return ms.ToArray();
+        }
+
+        public static IEnumerable<byte[]> Split (byte[] value, int bufferLength)
+        {
+            int countOfArray = value.Length / bufferLength;
+            if (value.Length % bufferLength > 0)
+                countOfArray++;
+            for (int i = 0; i < countOfArray; i++)
+            {
+                yield return value.Skip(i * bufferLength).Take(bufferLength).ToArray();
+
+            }
         }
 
     }
