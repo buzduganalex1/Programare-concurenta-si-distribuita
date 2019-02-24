@@ -10,15 +10,24 @@ namespace TcpUdp.Core
     {
         public static object ByteArrayToObject(this byte[] arrBytes)
         {
-            var memStream = new MemoryStream();
-            var binForm = new BinaryFormatter();
+            try
+            {
+                var memStream = new MemoryStream();
+                var binForm = new BinaryFormatter();
 
-            memStream.Write(arrBytes, 0, arrBytes.Length);
-            memStream.Seek(0, SeekOrigin.Begin);
+                memStream.Write(arrBytes, 0, arrBytes.Length);
+                memStream.Seek(0, SeekOrigin.Begin);
 
-            var deserializedObject = binForm.Deserialize(memStream);
+                var deserializedObject = binForm.Deserialize(memStream);
 
-            return deserializedObject;
+                return deserializedObject;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Console.WriteLine(arrBytes.Length);
+                throw e;
+            }
         }
 
         public static IEnumerable<byte[]> Split(this byte[] value, int bufferLength)

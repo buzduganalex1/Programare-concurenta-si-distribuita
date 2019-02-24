@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace TcpUdp.Client
 {
@@ -13,16 +12,15 @@ namespace TcpUdp.Client
 
         public static void Main()
         {
-            var numberOfClients = 3;
+            var clients = 10;
 
-            while (numberOfClients > 0)
+            while (clients > 0)
             {
-                new Task(() => new FileMessageClient(serverName, serverPort, messageSize).SendData()).Start();
+                new FileMessageClient(serverName, serverPort, messageSize).SendData();
 
-                numberOfClients--;
+                clients--;
             }
 
-            Console.WriteLine("\n Press Enter to continue...");
             Console.Read();
         }
     }

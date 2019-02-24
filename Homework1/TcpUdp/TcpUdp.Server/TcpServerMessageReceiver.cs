@@ -39,6 +39,8 @@ namespace TcpUdp.Server
                             {
                                 var messageResult = stream.ReadAsync(readBuffer, 0, readBuffer.Length).Result;
 
+                                Console.WriteLine(messageResult);
+
                                 message.AddRange(readBuffer);
 
                                 messageNumber++;

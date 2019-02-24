@@ -23,46 +23,60 @@ namespace TcpUdp.Client
 
         public void SendData()
         {
-            try
+            var bytesSent = 0;
+
+            var numberOfMessages = 0;
+
+            Console.WriteLine($"Client{Guid.NewGuid().ToString()}");
+
+            var fileMessages = this.GetFileMessages();
+
+            if (fileMessages.Any())
             {
-                Console.WriteLine($"Client{Guid.NewGuid().ToString()}");
+                var stream = this.tcpClient.GetStream();
 
-                var fileMessages = this.GetFileMessages();
-
-                if (fileMessages.Any())
+                foreach (var fileMessage in fileMessages)
                 {
-                    var stream = this.tcpClient.GetStream();
+                    var fileMessageByteArray = fileMessage.ToByteArray();
 
-                    foreach (var fileMessage in fileMessages)
+                    var packages = fileMessageByteArray.Split(maxMessageSize);
+
+                    var messageSize = BitConverter.GetBytes(fileMessageByteArray.Length);
+
+                    try
                     {
-                        var fileMessageByteArray = fileMessage.ToByteArray();
-
-                        var packages = fileMessageByteArray.Split(maxMessageSize);
-                        
-                        var messageSize = BitConverter.GetBytes(fileMessageByteArray.Length);
-
                         stream.Write(messageSize, 0, messageSize.Length);
 
                         foreach (var package in packages)
                         {
+                            Console.WriteLine(package.Length);
+
                             stream.Write(package, 0, package.Length);
-                            
-                            Console.WriteLine($"Number of bytes sent: {package.Length}");
+
+                            numberOfMessages++;
+
+                            bytesSent += package.Length;
                         }
                     }
+                    catch (ArgumentNullException e)
+                    {
+                        Console.WriteLine("ArgumentNullException: {0}", e);
+                    }
+                    catch (SocketException e)
+                    {
+                        Console.WriteLine("SocketException: {0}", e);
+                    }
+
                 }
 
-                tcpClient.GetStream().Close();
+                stream.Close();
+
                 tcpClient.Close();
             }
-            catch (ArgumentNullException e)
-            {
-                Console.WriteLine("ArgumentNullException: {0}", e);
-            }
-            catch (SocketException e)
-            {
-                Console.WriteLine("SocketException: {0}", e);
-            }
+
+            Console.WriteLine($"BytesSent: {bytesSent}");
+
+            Console.WriteLine($"NumberOfMessagesSent: {numberOfMessages}");
         }
 
         private IEnumerable<FileMessage> GetFileMessages()
