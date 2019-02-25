@@ -1,7 +1,6 @@
-﻿using TcpUdp.Core;
-using TcpUdp.Core.Models;
+﻿using TcpUdp.Core.Models;
 
-namespace TcpUdp.Server
+namespace TcpUdp.Server.Interfaces
 {
     public interface IFileMessageHandler
     {

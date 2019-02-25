@@ -24,12 +24,14 @@ namespace TcpUdp.Server
                 {
                     var client = server.AcceptTcpClientAsync().Result;
 
+                    client.NoDelay = true;
+
                     var clientIp = ((IPEndPoint) client.Client.RemoteEndPoint).Address.ToString();
 
                     var clientId = $"Client{clientCount}";
 
                     Console.WriteLine($"Client {clientId}-{clientIp} connected.");
-                    
+
                     clientCount++;
 
                     messageReceiver.ProcessMessageFromClient(client, clientId).Start();
@@ -37,7 +39,7 @@ namespace TcpUdp.Server
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                }            
+                }
             }
         }
 
