@@ -41,10 +41,33 @@ namespace TcpUdp.Core.Senders
 
         public override void SendBatched(IEnumerable<FileMessage> fileMessages)
         {
+            var tcpClient = new TcpClient(this.ServerName, this.ServerPort);
+            var stream = tcpClient.GetStream();
+
             foreach (var fileMessage in fileMessages)
             {
-               this.Send(fileMessage);
+                var fileMessageByteArray = fileMessage.ToByteArray();
+                var packages = fileMessageByteArray.Split(this.MaxMessageSize);
+                var messageSize = BitConverter.GetBytes(fileMessageByteArray.Length);
+
+                stream.Write(messageSize, 0, messageSize.Length);
+
+                foreach (var package in packages)
+                {
+                    stream.Write(package, 0, package.Length);
+
+                    this.Results.NumberOfMessages++;
+
+                    this.Results.BytesSent += package.Length;
+                }
+
+                System.Threading.Thread.Sleep(50);
             }
+
+            stream.Close();
+            tcpClient.Close();
+
+            Console.WriteLine(this.GetResultsMessage);
         }
     }
 }

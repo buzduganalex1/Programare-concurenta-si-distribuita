@@ -25,8 +25,7 @@ namespace TcpUdp.Core.Utilities
             catch (Exception e)
             {
                 Console.WriteLine(e);
-
-                throw;
+                return null;
             }
         }
 

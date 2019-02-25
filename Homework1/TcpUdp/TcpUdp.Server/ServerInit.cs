@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Net.Sockets;
+﻿using TcpUdp.Core.Utilities;
 
 namespace TcpUdp.Server
 {
@@ -8,43 +6,10 @@ namespace TcpUdp.Server
     {
         public static void Main(string[] args)
         {
-            var server = new TcpListener(IPAddress.Any, 9999);
+            var serverInitiator = new ServerInitiator();
 
-            var messageReceiver = new TcpServerMessageReceiver();
-
-            var clientCount = 0;
-
-            server.Start();
-
-            Console.WriteLine("Server started\nWaiting for clients...");
-
-            while (true)
-            {
-                try
-                {
-                    var client = server.AcceptTcpClientAsync().Result;
-
-                    client.NoDelay = true;
-
-                    var clientIp = ((IPEndPoint) client.Client.RemoteEndPoint).Address.ToString();
-
-                    var clientId = $"Client{clientCount}";
-
-                    Console.WriteLine($"Client {clientId}-{clientIp} connected.");
-
-                    clientCount++;
-
-                    messageReceiver.ProcessMessageFromClient(client, clientId).Start();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-            }
+            serverInitiator.Start(ProtocolTypeEnum.UDP);
         }
-
-       
-
     }
 }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using TcpUdp.Core.Interfaces;
 using TcpUdp.Core.Models;
@@ -17,18 +18,25 @@ namespace TcpUdp.Core.Database
 
             foreach (var file in files)
             {
-                var fileName = Path.GetFileName(file);
-
-                var format = fileName.Split('.')[1];
-
-                var name = fileName.Split('.')[0];
-
-                fileMessages.Add(new FileMessage
+                try
                 {
-                    Name = name,
-                    Format = format,
-                    Data = File.ReadAllBytesAsync($"{path}{name}.{format}").Result
-                });
+                    var fileName = Path.GetFileName(file);
+
+                    var format = fileName.Split('.')[1];
+
+                    var name = fileName.Split('.')[0];
+
+                    fileMessages.Add(new FileMessage
+                    {
+                        Name = name,
+                        Format = format,
+                        Data = File.ReadAllBytesAsync($"{path}{name}.{format}").Result
+                    });
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
             }
 
             return fileMessages;

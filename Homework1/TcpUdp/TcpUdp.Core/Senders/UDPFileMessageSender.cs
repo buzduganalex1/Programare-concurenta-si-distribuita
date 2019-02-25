@@ -13,7 +13,7 @@ namespace TcpUdp.Core.Senders
 
         public override void Send(FileMessage fileMessage)
         {
-            throw new System.NotImplementedException();
+
         }
     }
 }
