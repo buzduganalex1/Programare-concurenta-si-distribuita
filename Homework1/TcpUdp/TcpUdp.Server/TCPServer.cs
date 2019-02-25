@@ -57,12 +57,10 @@ namespace TcpUdp.Server
                                     var size = stream.ReadAsync(messageNumberOfBytes, 0, 4).Result;
 
                                     var messageNumberOfBytesInt = BitConverter.ToInt32(messageNumberOfBytes, 0);
-
-                                    while (message.Count >= 0 && message.Count < messageNumberOfBytesInt)
+                                    
+                                    while (message.Count < messageNumberOfBytesInt)
                                     {
                                         var messageResult = stream.Read(readBuffer, 0, readBuffer.Length);
-
-                                        Console.WriteLine(messageResult);
 
                                         message.AddRange(readBuffer);
 
@@ -71,24 +69,13 @@ namespace TcpUdp.Server
 
                                     var result = message.ToArray().ByteArrayToObject();
 
-                                    if (result == null)
+                                    if (result != null && result is FileMessage fileMessage)
                                     {
-                                        Console.WriteLine("Hello");
-                                    }
-                                    else
-                                    {
-                                        if (result is FileMessage fileMessage)
+                                        new Task(() =>
                                         {
-                                            new Task(() =>
-                                            {
-                                                new FileMessageHandler().Handle(Guid.NewGuid().ToString(),
-                                                    fileMessage);
-                                            }).Start();
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("Not Expected type.");
-                                        }
+                                            new FileMessageHandler().Handle(Guid.NewGuid().ToString(),
+                                                fileMessage);
+                                        }).Start();
                                     }
 
                                     Console.WriteLine($"Number of packages received: {messageNumber}");

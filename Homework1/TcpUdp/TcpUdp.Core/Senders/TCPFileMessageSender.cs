@@ -8,7 +8,6 @@ namespace TcpUdp.Core.Senders
 {
     public class TCPFileMessageSender : BaseFileMessageSender
     {
-
         public TCPFileMessageSender(string serverName, int serverPort, int maxMessageSize) : base(serverName,
             serverPort, maxMessageSize){}
 

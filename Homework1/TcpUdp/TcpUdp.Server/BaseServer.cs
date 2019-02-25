@@ -4,13 +4,13 @@ namespace TcpUdp.Server
 {
     public abstract class BaseServer
     {
-        private readonly string _serverName;
-        private readonly int _serverPort;
+        protected string ServerName { get; }
+        protected int ServerPort { get; }
 
         protected BaseServer(string serverName, int serverPort)
         {
-            _serverName = serverName;
-            _serverPort = serverPort;
+            ServerName = serverName;
+            ServerPort = serverPort;
         }
 
         public virtual ProtocolTypeEnum Type => ProtocolTypeEnum.Default;

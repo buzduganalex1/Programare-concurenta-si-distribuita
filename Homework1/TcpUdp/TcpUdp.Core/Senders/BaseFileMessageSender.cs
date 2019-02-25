@@ -26,6 +26,7 @@ namespace TcpUdp.Core.Senders
 
         public virtual void SendBatched(IEnumerable<FileMessage> fileMessage){}
 
-        public virtual string GetResultsMessage => $"Bytes sent: {this.Results.BytesSent}\nNumber of messages sent: {this.Results.NumberOfMessages}";
+        public virtual string GetResultsMessage =>
+            $"Protocol type: {this.Type.ToString()}\nBytes sent: {this.Results.BytesSent}\nNumber of messages sent: {this.Results.NumberOfMessages}";
     }
 }

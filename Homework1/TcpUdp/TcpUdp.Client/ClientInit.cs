@@ -9,22 +9,18 @@ namespace TcpUdp.Client
     public class ClientInit
     {
         private const string serverName = "localhost";
-        private const int serverPort = 9999;
+        private const int tcpServerPort = 9999;
+        private const int udpServerPort = 8888;
         private const int messageSize = 65535;
 
         public static void Main()
         {
-            var fileMessageSender = new FileMessagesesSender(serverName, serverPort, messageSize);
-            var fileMessages = new MockMessageProvider().GetFileMessages().ToList();
-
-            if (fileMessages.Count == 1)
-            {
-                fileMessageSender.Send(fileMessages.First(), ProtocolTypeEnum.UDP);
-
-                Console.WriteLine($"Total Transfer time (s):{fileMessageSender.TotalTransferTime.TotalSeconds}");
-            }
-
-            Console.WriteLine($"Total Transfer time (s):{fileMessageSender.TotalTransferTime.TotalSeconds}");
+            var fileMessageSender = new FileMessagesesSender(serverName, tcpServerPort, messageSize);
+            var fileMessages = new FileMessageProvider().GetFileMessages().ToList();
+            
+            fileMessageSender.SendBatched(fileMessages, ProtocolTypeEnum.TCP);
+            
+            Console.WriteLine($"\nTotal Transfer time (s):{fileMessageSender.TotalTransferTime.TotalSeconds}\n");
             
             Console.Read();
         }
