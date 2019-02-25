@@ -8,7 +8,7 @@ namespace TcpUdp.Server
         {
             var serverInitiator = new ServerInitiator();
 
-            serverInitiator.Start(ProtocolTypeEnum.TCP);
+            serverInitiator.Start(ProtocolTypeEnum.UDP);
         }
     }
 }

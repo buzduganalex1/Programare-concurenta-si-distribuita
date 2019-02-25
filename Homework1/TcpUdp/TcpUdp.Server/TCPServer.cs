@@ -23,7 +23,7 @@ namespace TcpUdp.Server
         {
             server.Start();
 
-            Console.WriteLine("Server started\nWaiting for clients...");
+            Console.WriteLine("TCP Server started\nWaiting for clients...");
 
             while (true)
             {

@@ -13,8 +13,8 @@ namespace TcpUdp.Server
         {
             this.servers = new List<BaseServer>
             {
-                new TCPServer(IPAddress.Any.ToString(), 9999),
-                new UDPServer(IPAddress.Any.ToString(), 8888)
+                new TCPServer(IPAddress.Any.ToString(), ConnectionCredentials.TCPServerPort),
+                new UDPServer(IPAddress.Any.ToString(), ConnectionCredentials.UDPServerPort)
             };
         }
 

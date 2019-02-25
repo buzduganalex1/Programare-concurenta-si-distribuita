@@ -1,1 +1,2 @@
-# Programare-concurenta-si-distribuita
+# Homework1 description
+

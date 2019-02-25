@@ -17,7 +17,8 @@ namespace TcpUdp.Server
 
         public override void Start()
         {
-            var data = new byte[102400];
+
+            Console.WriteLine("UDP Server started\nWaiting for clients...");
 
             var client = new IPEndPoint(IPAddress.Any, this.ServerPort);
 
@@ -25,7 +26,7 @@ namespace TcpUdp.Server
 
             while (true)
             {
-                Console.WriteLine("Waiting for a client...");
+                var data = new byte[102400];
 
                 var sender = new IPEndPoint(IPAddress.Any, 0);
 
@@ -40,8 +41,7 @@ namespace TcpUdp.Server
                 data = Encoding.ASCII.GetBytes("File received.");
 
                 newsock.Send(data, data.Length, sender);
-            }
-         
+            }        
         }
     }
 }
