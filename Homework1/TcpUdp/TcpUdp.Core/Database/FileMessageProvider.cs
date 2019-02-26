@@ -12,7 +12,7 @@ namespace TcpUdp.Core.Database
         {
             var fileMessages = new List<FileMessage>();
 
-            var path = @"C:\GitRepositories\Programare-concurenta-si-distribuita\Homework1\TcpUdp\TcpUdp.Core\TestResources\";
+            var path = @"C:\GitRepos\Programare-concurenta-si-distribuita\Homework1\TcpUdp\TcpUdp.Core\TestResources";
 
             var files = Directory.GetFiles(path);
 

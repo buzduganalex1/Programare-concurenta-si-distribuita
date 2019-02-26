@@ -11,7 +11,7 @@ namespace TcpUdp.Server
         {
             try
             {
-                var directory = @"..\..\..\Resources\";
+                var directory = @"C:\GitRepos\Programare-concurenta-si-distribuita\Homework1\TcpUdp\TcpUdp.Server";
 
                 var path = directory + $"/{message.Name}.{message.Format}";
 

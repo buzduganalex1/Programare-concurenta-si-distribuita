@@ -14,7 +14,7 @@ namespace TcpUdp.Client
         {
             var fileMessageSender = new FileMessagesesSender(ConnectionCredentials.ServerName, ConnectionCredentials.UDPServerPort, messageSize);
 
-            var fileMessages = new FileMessageProvider().GetFileMessages().ToList();
+            var fileMessages = new MockMessageProvider().GetFileMessages().ToList();
             
             fileMessageSender.SendBatched(fileMessages, ProtocolTypeEnum.UDP);
             
