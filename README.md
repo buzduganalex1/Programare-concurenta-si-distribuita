@@ -257,6 +257,3 @@ Sending the 250mb video took us 1 second on the computer and 4 on the laptop.
 | Streaming     | 0.02 | 2     | 4       |   |   |   |   |   |   |   |   |   |   |   |
 | Stop and wait | 0.03 | 3     | 7       |   |   |   |   |   |   |   |   |   |   |   |
 |               |      |       |         |   |   |   |   |   |   |   |   |   |   |   |
-|               |      |       |         |   |   |   |   |   |   |   |   |   |   |   |
-|               |      |       |         |   |   |   |   |   |   |   |   |   |   |   |
-|               |      |       |         |   |   |   |   |   |   |   |   |   |   |   |
