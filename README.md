@@ -249,11 +249,11 @@ Sending the 500mb zip took us 2 seconds on computer and 8 seconds on the laptop.
 Sending the 250mb video took us 1 second on the computer and 4 on the laptop.
 
 
-| __*TCP*__     | 10MB | 100MB | 1000MB  |   |   |   |   |   |   |   |   |   |   |   |
-|---------------|------|-------|---------|---|---|---|---|---|---|---|---|---|---|---|
-| Streaming     | 0.02 | 0.4   | 4       |   |   |   |   |   |   |   |   |   |   |   |
-| Stop and wait | 0.03 | 0.5   | 6       |   |   |   |   |   |   |   |   |   |   |   |
-| __*UDP*__     |      |       |         |   |   |   |   |   |   |   |   |   |   |   |
-| Streaming     | 0.02 | 2     | 4       |   |   |   |   |   |   |   |   |   |   |   |
-| Stop and wait | 0.03 | 3     | 7       |   |   |   |   |   |   |   |   |   |   |   |
-|               |      |       |         |   |   |   |   |   |   |   |   |   |   |   |
+| __*TCP*__     | 10MB | 100MB | 1000MB  |
+|---------------|------|-------|---------|
+| Streaming     | 0.02 | 0.4   | 4       |
+| Stop and wait | 0.03 | 0.5   | 6       |
+| __*UDP*__     |      |       |         |
+| Streaming     | 0.02 | 2     | 4       |
+| Stop and wait | 0.03 | 3     | 7       |
+|               |      |       |         |
