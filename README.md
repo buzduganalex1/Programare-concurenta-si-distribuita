@@ -193,6 +193,46 @@ To create a client simply use:
     }
 ```
 
+We are loading the data using a IFileMessageDataProvider which retrives files from disk or simply mocks.
+```c#
+    public class FileMessageProvider : IFileMessageProvider
+    {
+        public IEnumerable<FileMessage> GetFileMessages()
+        {
+            var fileMessages = new List<FileMessage>();
+
+            var path = @"C:\GitRepos\Programare-concurenta-si-distribuita\Homework1\TcpUdp\TcpUdp.Core\TestResources";
+
+            var files = Directory.GetFiles(path);
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var fileName = Path.GetFileName(file);
+
+                    var format = fileName.Split('.')[1];
+
+                    var name = fileName.Split('.')[0];
+
+                    fileMessages.Add(new FileMessage
+                    {
+                        Name = name,
+                        Format = format,
+                        Data = File.ReadAllBytesAsync($"{path}{name}.{format}").Result
+                    });
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
+
+            return fileMessages;
+        }
+    }
+```
+
 ## Benchmarks
 For testing purposes we used a [kaggle image dataset](:https://www.kaggle.com/thedownhill/art-images-drawings-painting-sculpture-engraving ) comprised of 9000 images total size of 500 MB.
 
@@ -201,3 +241,22 @@ Other than this we tried sending zip, mp4, and iso extensions.
 We ran multiple test on the Tcp and Udp server both with streaming and with stop and wait.
 
 ## Results
+
+On the TCP server with the streaming option we processed 9000 images in 30 seconds.
+
+Sending the 500mb zip took us 2 seconds on computer and 8 seconds on the laptop.
+
+Sending the 250mb video took us 1 second on the computer and 4 on the laptop.
+
+
+| __*TCP*__     | 10MB | 100MB | 1000MB  |   |   |   |   |   |   |   |   |   |   |   |
+|---------------|------|-------|---------|---|---|---|---|---|---|---|---|---|---|---|
+| Streaming     | 0.02 | 0.4   | 4       |   |   |   |   |   |   |   |   |   |   |   |
+| Stop and wait | 0.03 | 0.5   | 6       |   |   |   |   |   |   |   |   |   |   |   |
+| __*UDP*__     |      |       |         |   |   |   |   |   |   |   |   |   |   |   |
+| Streaming     | 0.02 | 2     | 4       |   |   |   |   |   |   |   |   |   |   |   |
+| Stop and wait | 0.03 | 3     | 7       |   |   |   |   |   |   |   |   |   |   |   |
+|               |      |       |         |   |   |   |   |   |   |   |   |   |   |   |
+|               |      |       |         |   |   |   |   |   |   |   |   |   |   |   |
+|               |      |       |         |   |   |   |   |   |   |   |   |   |   |   |
+|               |      |       |         |   |   |   |   |   |   |   |   |   |   |   |
