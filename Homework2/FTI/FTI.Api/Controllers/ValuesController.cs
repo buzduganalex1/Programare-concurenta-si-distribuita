@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using FTI.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FTI.Api.Controllers
@@ -12,9 +9,16 @@ namespace FTI.Api.Controllers
     {
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            var receipt = new Receipt();
+
+            receipt.AddCustomerNumber("123");
+            receipt.AddItem(new Item("Milk", new Amount(CurrencyEnum.EUR, 10.0f)));
+            receipt.AddItem(new Item("Egs", new Amount(CurrencyEnum.EUR, 5.0f)));
+            receipt.AddItem(new Item("Honey", new Amount(CurrencyEnum.EUR, 2.0f)));
+            
+            return Ok(receipt.ToJson());
         }
 
         // GET api/values/5
