@@ -20,7 +20,7 @@ namespace FTI.Api.Controllers
             
             return Ok(receipt.ToJson());
         }
-
+        
         // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
@@ -32,6 +32,7 @@ namespace FTI.Api.Controllers
         [HttpPost]
         public void Post([FromBody] string value)
         {
+
         }
 
         // PUT api/values/5
