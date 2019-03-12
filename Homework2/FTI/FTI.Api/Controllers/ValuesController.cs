@@ -1,4 +1,5 @@
 ﻿using FTI.Api.Models;
+using FTI.Business;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FTI.Api.Controllers
@@ -7,6 +8,13 @@ namespace FTI.Api.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly IPublisher _publisher;
+
+        public ValuesController(IPublisher publisher)
+        {
+            _publisher = publisher;
+        }
+
         // GET api/values
         [HttpGet]
         public IActionResult Get()
@@ -30,9 +38,9 @@ namespace FTI.Api.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Receipt receipt)
         {
-
+            this._publisher.PublishMessage(receipt.ToJson());
         }
 
         // PUT api/values/5
