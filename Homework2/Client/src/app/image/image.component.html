@@ -1,0 +1,25 @@
+<div *ngIf="image">
+  <div>
+      <p><b>Image uri</b>: {{image.uri}}</p>
+      <p><b>Image description</b>: {{image.description}}</p>
+      <img src="{{image.content}}" alt="Smiley face" width="80%">
+      
+      <br><b>Tags</b><br>
+
+      <div>
+          <a *ngFor="let tag of image.tags"routerLink="/tag/{{tag.uri}}">{{tag.label}}</a>
+      </div>
+  </div>
+  
+  <br><br><br> <b>Similar images</b> <br><br><br>
+
+  <div *ngFor="let similarImage of similarImages" class="polaroid">
+      <a routerLink="/image/{{similarImage.uri}}" (click)="onClick()">     
+        <img src="{{similarImage.content}}" width="300" height="300" style="width:100%" alt="Smiley face">
+      </a>
+      <div class="container">
+          <p> {{similarImage.description}} <br></p>
+      </div>
+  </div>    
+</div>
+

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="RomanticWeb">
+      <HintPath>..\..\..\..\..\..\Users\Alexandru\.nuget\packages\romanticweb\0.4.0\Lib\net40\RomanticWeb.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
