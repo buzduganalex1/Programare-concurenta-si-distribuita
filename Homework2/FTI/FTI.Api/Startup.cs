@@ -1,6 +1,11 @@
-﻿using FTI.Business;
+﻿using System;
+using System.Net.WebSockets;
+using System.Threading;
+using System.Threading.Tasks;
+using FTI.Business;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,14 +35,51 @@ namespace FTI.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
 
-            app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseWebSockets();
+
+            ////app.Use(async (context, next) =>
+            ////{
+            ////    if (context.Request.Path == "/ws")
+            ////    {
+            ////        if (context.WebSockets.IsWebSocketRequest)
+            ////        {
+            ////            WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
+            ////            await Echo(context, webSocket);
+            ////        }
+            ////        else
+            ////        {
+            ////            context.Response.StatusCode = 400;
+            ////        }
+            ////    }
+            ////    else
+            ////    {
+            ////        await next();
+            ////    }
+
+            ////});
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Page}/{action=Index}/{id?}");
+            });
+            app.UseFileServer();
+            app.UseStaticFiles();
         }
+        #region Echo
+        private async Task Echo(HttpContext context, WebSocket webSocket)
+        {
+            var buffer = new byte[1024 * 4];
+            WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+            while (!result.CloseStatus.HasValue)
+            {
+                await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
+
+                result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+            }
+            await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+        }
+        #endregion
     }
 }
