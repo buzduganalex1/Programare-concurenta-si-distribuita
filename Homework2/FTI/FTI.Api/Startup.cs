@@ -1,11 +1,7 @@
-﻿using System;
-using System.Net.WebSockets;
-using System.Threading;
-using System.Threading.Tasks;
-using FTI.Business;
+﻿using FTI.Business;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +22,19 @@ namespace FTI.Api
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSingleton<IPublisher, ReceiptPublisher>();
+            services.AddSignalR();
+
+            var corsBuilder = new CorsPolicyBuilder();
+            corsBuilder.AllowAnyHeader();
+            corsBuilder.AllowAnyMethod();
+            corsBuilder.AllowAnyOrigin(); // For anyone access.
+            corsBuilder.WithOrigins("http://localhost:4200"); // for a specific url. Don't add a forward slash on the end!
+            corsBuilder.AllowCredentials();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", corsBuilder.Build());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,50 +45,11 @@ namespace FTI.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseWebSockets();
+            app.UseCors("CorsPolicy");
 
-            ////app.Use(async (context, next) =>
-            ////{
-            ////    if (context.Request.Path == "/ws")
-            ////    {
-            ////        if (context.WebSockets.IsWebSocketRequest)
-            ////        {
-            ////            WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-            ////            await Echo(context, webSocket);
-            ////        }
-            ////        else
-            ////        {
-            ////            context.Response.StatusCode = 400;
-            ////        }
-            ////    }
-            ////    else
-            ////    {
-            ////        await next();
-            ////    }
+            app.UseSignalR(routes => { routes.MapHub<NotifyHub>("/notify"); });
 
-            ////});
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Page}/{action=Index}/{id?}");
-            });
-            app.UseFileServer();
-            app.UseStaticFiles();
+            app.UseMvc();
         }
-        #region Echo
-        private async Task Echo(HttpContext context, WebSocket webSocket)
-        {
-            var buffer = new byte[1024 * 4];
-            WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-            while (!result.CloseStatus.HasValue)
-            {
-                await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
-
-                result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-            }
-            await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
-        }
-        #endregion
     }
 }

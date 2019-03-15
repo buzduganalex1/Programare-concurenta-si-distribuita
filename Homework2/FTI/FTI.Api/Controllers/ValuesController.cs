@@ -1,6 +1,8 @@
-﻿using FTI.Api.Models;
+﻿using System;
+using FTI.Api.Models;
 using FTI.Business;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace FTI.Api.Controllers
 {
@@ -9,13 +11,14 @@ namespace FTI.Api.Controllers
     public class ValuesController : ControllerBase
     {
         private readonly IPublisher _publisher;
+        private readonly IHubContext<NotifyHub, ITypedHubClient> _hubContext;
 
-        public ValuesController(IPublisher publisher)
+        public ValuesController(IPublisher publisher, IHubContext<NotifyHub, ITypedHubClient> hubContext)
         {
             _publisher = publisher;
+            _hubContext = hubContext;
         }
-
-        // GET api/values
+        
         [HttpGet]
         public IActionResult Get()
         {
@@ -25,34 +28,30 @@ namespace FTI.Api.Controllers
             receipt.AddItem(new Item("Milk", new Amount(CurrencyEnum.EUR, 10.0f)));
             receipt.AddItem(new Item("Egs", new Amount(CurrencyEnum.EUR, 5.0f)));
             receipt.AddItem(new Item("Honey", new Amount(CurrencyEnum.EUR, 2.0f)));
-            
+
+            var message = new Message()
+            {
+                Payload = receipt.ToJson(),
+                Type = "Receipt"
+            };
+
+            _hubContext.Clients.All.BroadcastMessage(message.Type, message.Payload);
+
             return Ok(receipt.ToJson());
         }
         
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
         [HttpPost]
         public void Post([FromBody] Receipt receipt)
         {
+            var message = new Message()
+            {
+                Payload = receipt.ToJson(),
+                Type = "Receipt"
+            };
+
+            _hubContext.Clients.All.BroadcastMessage(message.Type, message.Payload);
+
             this._publisher.PublishMessage(receipt.ToJson());
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

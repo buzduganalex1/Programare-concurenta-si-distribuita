@@ -18,6 +18,13 @@ Client will be a PWA.
 
 Using websockets data about tickets will be updated real time on the mobile app.
 
+## Prequisites
+
+Starting the server
+```bash 
+cd C:\GitRepositories\Programare-concurenta-si-distribuita\Homework2\FTI\FTI.Api && dotnet watch run
+```
+
 # Implementation details
 
 ## Models
