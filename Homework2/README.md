@@ -64,7 +64,19 @@ The application is centered around receipts. We want the simplest receipt.
 }
 ```
 
+## WebSocket
+
+-----------------------
+
+WebSocket is a computer communications protocol, providing full-duplex communication channels over a single TCP connection. The WebSocket protocol was standardized by the IETF as RFC 6455 in 2011, and the WebSocket API in Web IDL is being standardized by the W3C.
+
+### Signal R
+
+### Cors
+
 ## Google Pub/Sub
+
+--------------
 
 ### Description
 Cloud Pub/Sub brings the flexibility and reliability of enterprise message-oriented middleware to the cloud. At the same time, Cloud Pub/Sub is a scalable, durable event ingestion and delivery system that serves as a foundation for modern stream analytics pipelines. By providing many-to-many, asynchronous messaging that decouples senders and receivers, it allows for secure and highly available communication among independently written applications. Cloud Pub/Sub delivers low-latency, durable messaging that helps developers quickly integrate systems hosted on the Google Cloud Platform and externally.
@@ -132,3 +144,10 @@ Body:
 ```
 Execute the FTI.Subscribers -- This will launch 3 subscribers that will receive a copy of the published receipt. 
 ```
+
+## Resources
+
+-------------
+
+- https://medium.com/@rukshandangalla/how-to-notify-your-angular-5-app-using-signalr-5e5aea2030b2 
+- https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.2 
