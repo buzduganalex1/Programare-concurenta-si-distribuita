@@ -5,11 +5,13 @@ import { HttpClientModule }    from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ReceiptViewerComponent } from './receipt-viewer/receipt-viewer.component';
+import { ViewReceiptsComponent } from './view-receipts/view-receipts.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ReceiptViewerComponent
+    ReceiptViewerComponent,
+    ViewReceiptsComponent
   ],
   imports: [
     BrowserModule,

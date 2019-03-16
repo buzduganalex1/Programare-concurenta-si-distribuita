@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>Receipts</title>
+  </head>
+  <body> 
+
+    <div class="container">
+        <h3 class="card-title">Receipts</h3>
+        <div class="form-group">
+            <form>
+              <div *ngFor="let message of messages" class="form-group">
+                <label for="messageType">Message Type</label>
+                <select class="form-control" [(ngModel)]="message.severity" [ngModelOptions]="{standalone: true}" id="messageType">
+                  <option>Xml</option>
+                  <option selected>Json</option>
+                  <option>Printable Text</option>
+                </select>
+                
+                <p>{{message.summary}}</p>        
+                <p>{{message.severity}}</p>       
+            </div>
+            </form>
+        </div>
+    </div>
+  </body>
+</html>     
