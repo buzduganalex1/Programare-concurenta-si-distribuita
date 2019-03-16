@@ -43,6 +43,8 @@ namespace FTI.Api.Controllers
         [HttpPost]
         public void Post([FromBody] Receipt receipt)
         {
+            Console.WriteLine(receipt.ToJson());
+            
             var message = new Message()
             {
                 Payload = receipt.ToJson(),

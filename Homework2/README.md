@@ -18,6 +18,10 @@ Client will be a PWA.
 
 Using websockets data about tickets will be updated real time on the mobile app.
 
+On the client we will be able to create ticket and receive a copy through a websocket.
+
+A faas will convert the receipt in xml.
+
 ## Prequisites
 
 Starting the server

@@ -1,4 +1,6 @@
 ﻿using System;
+using FTI.Api.Models;
+using FTI.Business;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
@@ -20,21 +22,10 @@ namespace FTI.Api.Controllers
         }
 
         [HttpPost]
-        public string Post([FromBody] Message msg)
+        public IActionResult Post([FromBody] Receipt receipt)
         {
-            string retMessage;
-
-            try
-            {
-                _hubContext.Clients.All.BroadcastMessage(msg.Type, msg.Payload);
-                retMessage = "Success";
-            }
-            catch (Exception e)
-            {
-                retMessage = e.ToString();
-            }
-
-            return retMessage;
+            
+            return Ok(receipt);
         }
     }
 
