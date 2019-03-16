@@ -11,7 +11,7 @@ namespace FTI.Subscribers.Subscribers
         {
             Console.WriteLine("Interpreter subscribed");
 
-            var projectId = "fastticketinterpreter";
+            var projectId = "lucky-display-234707";
             var topicId = "ticketsTopic";
             var subscriptionId = "interpreterSubscription";
             var topicName = new TopicName(projectId, topicId);
@@ -19,7 +19,7 @@ namespace FTI.Subscribers.Subscribers
             // Subscribe to the topic.
             SubscriberServiceApiClient subscriberService = SubscriberServiceApiClient.CreateAsync().Result;
             SubscriptionName subscriptionName = new SubscriptionName(projectId, subscriptionId);
-            // subscriberService.CreateSubscription(subscriptionName, topicName, pushConfig: null, ackDeadlineSeconds: 60);
+            //subscriberService.CreateSubscription(subscriptionName, topicName, pushConfig: null, ackDeadlineSeconds: 60);
 
             // Pull messages from the subscription using SimpleSubscriber.
             SubscriberClient subscriber = SubscriberClient.CreateAsync(subscriptionName).Result;

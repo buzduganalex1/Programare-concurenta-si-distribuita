@@ -5,16 +5,21 @@ namespace FTI.Business
 {
     public class ReceiptPublisher : IPublisher
     {
-        const string projectId = "fastticketinterpreter";
+        const string projectId = "lucky-display-234707";
         const string topicId = "ticketsTopic";
         
         public void PublishMessage(string message)
         {
-            var publisher = PublisherClient.CreateAsync(new TopicName(projectId, topicId)).Result;
+            try{
+                TopicName topicName = new TopicName(projectId, topicId);
 
-            var messageId = publisher.PublishAsync(message).Result;
-            
-            publisher.ShutdownAsync(TimeSpan.FromSeconds(15));
+                var publisher = PublisherClient.CreateAsync(topicName).Result;
+                var messageId = publisher.PublishAsync(message).Result;
+                
+                publisher.ShutdownAsync(TimeSpan.FromSeconds(15));
+            }catch(Exception e){
+                Console.WriteLine(e);
+            }
         }
     }
 }

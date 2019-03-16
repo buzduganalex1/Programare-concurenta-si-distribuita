@@ -10,8 +10,7 @@ namespace FTI.Subscribers.Subscribers
         public async Task Subscribe()
         {
             Console.WriteLine("Indexer subscribed");
-
-            var projectId = "fastticketinterpreter";
+            var projectId = "lucky-display-234707";
             var topicId = "ticketsTopic";
             var subscriptionId = "indexSubscription";
             var topicName = new TopicName(projectId, topicId);
