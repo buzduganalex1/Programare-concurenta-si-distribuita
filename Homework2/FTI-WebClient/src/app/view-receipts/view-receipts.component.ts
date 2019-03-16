@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { Message } from 'primeng/api';
+import { ConvertReceiptService } from '../services/convert-receipt.service';
+import { ReceiptMessage } from 'src/models/ReceiptMessage';
 
 @Component({
   selector: 'app-view-receipts',
@@ -10,11 +12,11 @@ import { Message } from 'primeng/api';
 
 export class ViewReceiptsComponent implements OnInit {
 
-  constructor() { }
+  constructor(public convertService: ConvertReceiptService) { }
   
   messages: Message[] = [];
   messageType: string;
-  
+
   private _hubConnection: HubConnection;
 
   ngOnInit() {
@@ -24,9 +26,25 @@ export class ViewReceiptsComponent implements OnInit {
       .then(() => console.log('Connection started!'))
       .catch(err => console.log('Error while establishing connection :('));
 
-    this._hubConnection.on('BroadcastMessage', (type: string, payload: string) => {
+    this._hubConnection.on('BroadcastMessage', (type: string, payload: string, id: string) => {
       console.log(payload);
-      this.messages.push({ severity: type, summary: payload });
+      this.messages.push({ severity: type, summary: payload, id: id });
+    });
+  }
+  
+  onChange(newValue) {
+    var message1 = new ReceiptMessage(newValue.summary, newValue.severity, newValue.id);
+
+    console.log(newValue);
+
+    this.convertService.convertReceipt(message1).subscribe(message => 
+    {
+      var bindedMessages = this.messages.filter(x => x.id == message.id);
+      
+      if(bindedMessages.length > 0){
+        var bindedMessage = bindedMessages[0];
+        bindedMessage.summary = message.payload;
+      }
     });
   }
 }

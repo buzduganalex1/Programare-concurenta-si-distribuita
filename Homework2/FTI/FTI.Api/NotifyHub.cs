@@ -9,6 +9,6 @@ namespace FTI.Api
 
     public interface ITypedHubClient
     {
-        Task BroadcastMessage(string type, string payload);
+        Task BroadcastMessage(string type, string payload, string id);
     }
 }

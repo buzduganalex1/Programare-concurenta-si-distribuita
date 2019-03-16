@@ -10,14 +10,13 @@
             <form>
               <div *ngFor="let message of messages" class="form-group">
                 <label for="messageType">Message Type</label>
-                <select class="form-control" [(ngModel)]="message.severity" [ngModelOptions]="{standalone: true}" id="messageType">
+                <select class="form-control"(ngModelChange)="onChange(message)" [(ngModel)]="message.severity" [ngModelOptions]="{standalone: true}" id="messageType">
                   <option>Xml</option>
-                  <option selected>Json</option>
+                  <option>Json</option>
                   <option>Printable Text</option>
                 </select>
-                
-                <p>{{message.summary}}</p>        
-                <p>{{message.severity}}</p>       
+
+                <p>{{message.summary | json}}</p>
             </div>
             </form>
         </div>

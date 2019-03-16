@@ -32,10 +32,11 @@ namespace FTI.Api.Controllers
             var message = new Message()
             {
                 Payload = receipt.ToJson(),
-                Type = "Receipt"
+                Type = "Json",
+                Id = Guid.NewGuid().ToString()
             };
 
-            _hubContext.Clients.All.BroadcastMessage(message.Type, message.Payload);
+            _hubContext.Clients.All.BroadcastMessage(message.Type, message.Payload, message.Id);
 
             return Ok(receipt.ToJson());
         }
@@ -44,14 +45,15 @@ namespace FTI.Api.Controllers
         public void Post([FromBody] Receipt receipt)
         {
             Console.WriteLine(receipt.ToJson());
-            
+
             var message = new Message()
             {
                 Payload = receipt.ToJson(),
-                Type = "Receipt"
+                Type = "Json",
+                Id = Guid.NewGuid().ToString()
             };
 
-            _hubContext.Clients.All.BroadcastMessage(message.Type, message.Payload);
+            _hubContext.Clients.All.BroadcastMessage(message.Type, message.Payload, message.Id);
 
             this._publisher.PublishMessage(receipt.ToJson());
         }
