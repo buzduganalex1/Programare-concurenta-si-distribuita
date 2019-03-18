@@ -1,13 +1,11 @@
 export class ReceiptMessage {  
-    Payload: string;
-    Type: string;
-    Id: string;
-    /**
-     *
-     */
-    constructor(payload:string, type: string, id: string) {
-        this.Payload = payload;
-        this.Type = type;
-        this.Id = id;
+    payload: string;
+    type: string;
+    id: string;
+
+    constructor(Payload:string, Type: string, Id: string) {
+        this.payload = Payload;
+        this.type = Type;
+        this.id = Id;
     }
 }

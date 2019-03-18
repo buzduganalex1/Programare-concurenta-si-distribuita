@@ -15,6 +15,9 @@ export class ViewReceiptsComponent implements OnInit {
   constructor(public convertService: ConvertReceiptService) { }
   
   messages: Message[] = [];
+  jsonMessages :ReceiptMessage[] = [];
+  xmlMessages :ReceiptMessage[] = [];
+  ptMessages :ReceiptMessage[] = [];
   messageType: string;
 
   private _hubConnection: HubConnection;
@@ -29,22 +32,16 @@ export class ViewReceiptsComponent implements OnInit {
     this._hubConnection.on('BroadcastMessage', (type: string, payload: string, id: string) => {
       console.log(payload);
       this.messages.push({ severity: type, summary: payload, id: id });
-    });
-  }
-  
-  onChange(newValue) {
-    var message1 = new ReceiptMessage(newValue.summary, newValue.severity, newValue.id);
 
-    console.log(newValue);
-
-    this.convertService.convertReceipt(message1).subscribe(message => 
-    {
-      var bindedMessages = this.messages.filter(x => x.id == message.id);
-      
-      if(bindedMessages.length > 0){
-        var bindedMessage = bindedMessages[0];
-        bindedMessage.summary = message.payload;
-      }
+      this.convertService.convertReceipt(new ReceiptMessage(payload,"Xml", id)).subscribe(x =>{
+        this.xmlMessages.push(new ReceiptMessage(x.payload, x.type, x.id))
+      });
+      this.convertService.convertReceipt(new ReceiptMessage(payload,"Json", id)).subscribe(x =>{
+        this.jsonMessages.push(new ReceiptMessage(x.payload, x.type, x.id))
+      });
+      this.convertService.convertReceipt(new ReceiptMessage(payload,"PlainText", id)).subscribe(x =>{
+        this.ptMessages.push(new ReceiptMessage(x.payload, x.type, x.id))
+      });
     });
   }
 }

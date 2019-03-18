@@ -16,5 +16,7 @@ namespace FTI.Api.Models
         public CurrencyEnum Currency { get; private set; }
 
         public float Value { get; private set; }
+
+        public new string ToString => $"{this.Value} {this.Currency}";
     }
 }

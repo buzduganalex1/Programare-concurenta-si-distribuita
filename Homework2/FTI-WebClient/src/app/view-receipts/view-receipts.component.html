@@ -6,20 +6,35 @@
 
     <div class="container">
         <h3 class="card-title">Receipts</h3>
-        <div class="form-group">
-            <form>
-              <div *ngFor="let message of messages" class="form-group">
-                <label for="messageType">Message Type</label>
-                <select class="form-control"(ngModelChange)="onChange(message)" [(ngModel)]="message.severity" [ngModelOptions]="{standalone: true}" id="messageType">
-                  <option>Xml</option>
-                  <option>Json</option>
-                  <option>Printable Text</option>
-                </select>
+          <div class="list-group" *ngFor="let message of jsonMessages">
+            <br>
+              <div class="list-group-item">      
+                  <div class="alert alert-success" role="alert">
+                    {{message.type}}
+                </div>             
+                <p>{{message.payload}}</p>
+              </div>
+          </div>
 
-                <p>{{message.summary | json}}</p>
+          <div class="list-group" *ngFor="let message of xmlMessages">
+              <br>
+                <div class="list-group-item">      
+                  <div class="alert alert-primary" role="alert">
+                      {{message.type}}
+                  </div>     
+                  <p>{{message.payload}}</p>
+                </div>
             </div>
-            </form>
-        </div>
+
+            <div class="list-group" *ngFor="let message of ptMessages">
+                <br>
+                  <div class="list-group-item">      
+                      <div class="alert alert-warning" role="alert">
+                        {{message.type}}
+                    </div> 
+                    <p>{{message.payload}}</p>
+                  </div>
+            </div>
     </div>
   </body>
 </html>     

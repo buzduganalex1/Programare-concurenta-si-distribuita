@@ -3,6 +3,7 @@ using FTI.Api.Models;
 using FTI.Business;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 
 namespace FTI.Api.Controllers
 {
@@ -22,22 +23,26 @@ namespace FTI.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Message message)
+        public ActionResult<Message> Post([FromBody] Message message)
         {
-            var receipt = new Receipt();
+            var receipt = JsonConvert.DeserializeObject<Receipt>(message.Payload);
+            
+            Console.WriteLine(message);
 
-            receipt.AddCustomerNumber("123");
-            receipt.AddItem(new Item("Milk", new Amount(CurrencyEnum.EUR, 10.0f)));
-            receipt.AddItem(new Item("Egs", new Amount(CurrencyEnum.EUR, 5.0f)));
-            receipt.AddItem(new Item("Honey", new Amount(CurrencyEnum.EUR, 2.0f)));
+            switch (message.Type)
+            {
+                case "Json":
+                    message.Payload = receipt.ToJson();
+                    return Ok(message);
+                case "Xml":
+                    message.Payload = receipt.ToXml();
+                    return Ok(message);
+                case "PlainText":
+                    message.Payload = receipt.ToPlainText();
+                    return Ok(message);
+            }
 
             Console.WriteLine(message.Payload);
-
-            if(message.Type== "Printable Text"){
-                message.Payload = receipt.ToJson();
-
-                return Ok(message);
-            }
 
             return Ok(message);
         }
