@@ -8,17 +8,20 @@ import { throwError, Observable } from 'rxjs';
 })
 export class ReceiptService {
 
-  serverUrl :string;
+  serverUrl: string;
+  productionUrl: string;
+
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
   constructor( private http: HttpClient) {
-    this.serverUrl = "http://localhost:5000/api/values"  
+    this.serverUrl = "http://localhost:5000/api/values";
+    this.productionUrl = "https://ftiapi.azurewebsites.net/api/values";
   }
 
   sendReceipt(receipt: Receipt){
-    this.http.post<Receipt>(this.serverUrl, receipt, this.httpOptions).subscribe(item => {
+    this.http.post<Receipt>(this.productionUrl, receipt, this.httpOptions).subscribe(item => {
     });
   }
 }

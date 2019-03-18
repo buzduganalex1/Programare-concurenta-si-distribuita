@@ -10,7 +10,7 @@ namespace FTI.Subscribers
     {
         static void Main(string[] args)
         {            
-            // // CreateTopic();
+            ////CreateTopic();
 
             var task = new List<Task>();
             var handlers = new List<ISubscriber>()
@@ -29,7 +29,7 @@ namespace FTI.Subscribers
 
         static void CreateTopic(){
             try{
-                var projectId = "lucky-display-234707";
+                var projectId = "friendly-path-234919";
                 var topicId = "ticketsTopic";
             
                 PublisherServiceApiClient publisherService = PublisherServiceApiClient.CreateAsync().Result;

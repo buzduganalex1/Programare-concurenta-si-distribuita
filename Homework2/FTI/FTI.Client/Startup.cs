@@ -1,12 +1,11 @@
-﻿using FTI.Business;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FTI.Api
+namespace FTI.Client
 {
     public class Startup
     {
@@ -21,19 +20,11 @@ namespace FTI.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddSingleton<IPublisher, ReceiptPublisher>();
-            services.AddSignalR();
 
-            var corsBuilder = new CorsPolicyBuilder();
-            corsBuilder.AllowAnyHeader();
-            corsBuilder.AllowAnyMethod();
-            corsBuilder.AllowAnyOrigin(); // For anyone access.
-            corsBuilder.WithOrigins("http://localhost:6001", "https://fticlient.azurewebsites.net"); // for a specific url. Don't add a forward slash on the end!
-            corsBuilder.AllowCredentials();
-
-            services.AddCors(options =>
+            // In production, the Angular files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
             {
-                options.AddPolicy("CorsPolicy", corsBuilder.Build());
+                configuration.RootPath = "wwwroot";
             });
         }
 
@@ -44,12 +35,28 @@ namespace FTI.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
 
-            app.UseCors("CorsPolicy");
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
-            app.UseSignalR(routes => { routes.MapHub<NotifyHub>("/notify"); });
+            app.UseSpa(spa =>
+            {
+                // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                // see https://go.microsoft.com/fwlink/?linkid=864501
 
-            app.UseMvc();
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
+            });
         }
     }
 }

@@ -19,7 +19,7 @@ namespace FTI.Api.Controllers
             _hubContext = hubContext;
         }
         
-        [HttpGet]
+        [HttpGet]   
         public IActionResult Get()
         {
             var receipt = new Receipt();

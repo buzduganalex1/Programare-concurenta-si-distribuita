@@ -5,7 +5,7 @@ namespace FTI.Business
 {
     public class ReceiptPublisher : IPublisher
     {
-        const string projectId = "lucky-display-234707";
+        const string projectId = "friendly-path-234919";
         const string topicId = "ticketsTopic";
         
         public void PublishMessage(string message)

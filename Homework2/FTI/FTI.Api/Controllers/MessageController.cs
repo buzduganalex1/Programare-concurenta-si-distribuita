@@ -16,6 +16,7 @@ namespace FTI.Api.Controllers
         {
             _hubContext = hubContext;
         }
+
         [HttpGet]
         public IActionResult Get()
         {

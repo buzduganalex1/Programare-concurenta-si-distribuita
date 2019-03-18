@@ -19,11 +19,14 @@ export class ViewReceiptsComponent implements OnInit {
   xmlMessages :ReceiptMessage[] = [];
   ptMessages :ReceiptMessage[] = [];
   messageType: string;
-
+  productionUrl: string;
+  serverUrl: string;
   private _hubConnection: HubConnection;
 
   ngOnInit() {
-    this._hubConnection = new HubConnectionBuilder().withUrl("http://localhost:5000/notify").build();
+    this.productionUrl = "https://ftiapi.azurewebsites.net/notify";
+    this.serverUrl = "http://localhost:5000/notify";
+    this._hubConnection = new HubConnectionBuilder().withUrl(this.productionUrl).build();
     this._hubConnection
       .start()
       .then(() => console.log('Connection started!'))
