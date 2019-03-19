@@ -1,8 +1,7 @@
-﻿using FTI.ConversionFunction;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace FIT.ConversionFunctionAnnonymous
+namespace FTI.ConversionFunction.Models
 {
     public class Amount
     {

@@ -1,4 +1,4 @@
-export class ReceiptMessage {  
+export class NotificationMessage {  
     payload: string;
     type: string;
     id: string;

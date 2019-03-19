@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  host: "http://localhost:5000"
+  //conversionFunctionEndpoint: "https://fti-conversion.azurewebsites.net/api/Function2?code=BLytKhxIwTXiT/ZWhte2dQzRxI54HwjHaNU/3B1a4TYKlKVU7EwJAg==",
 };
 
 /*

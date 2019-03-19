@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Json;
@@ -8,11 +7,10 @@ using System.Xml;
 using System.Xml.Linq;
 using Newtonsoft.Json;
 
-namespace FTI.Api.Models
+namespace FTI.ConversionFunction.Models
 {
     public class Receipt
     {
-
         public Receipt()
         {
             this.Items = new List<Item>();

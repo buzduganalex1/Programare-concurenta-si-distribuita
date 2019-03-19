@@ -1,8 +1,7 @@
-﻿using FTI.Api.Controllers;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace FTI.Api.Models
+namespace FTI.Business.Models
 {
     public class Amount
     {

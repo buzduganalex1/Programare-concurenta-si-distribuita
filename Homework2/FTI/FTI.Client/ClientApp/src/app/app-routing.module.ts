@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ReceiptViewerComponent } from './receipt-viewer/receipt-viewer.component';
 import { ViewReceiptsComponent } from './view-receipts/view-receipts.component';
+import { CreateReceiptsComponent } from './create-receipts/create-receipts.component';
 
 const routes: Routes = [
-  { path: 'createReceipt', component: ReceiptViewerComponent},
+  { path: 'receipts/create', component: CreateReceiptsComponent},
   { path: 'receipts', component: ViewReceiptsComponent},
 ];
 

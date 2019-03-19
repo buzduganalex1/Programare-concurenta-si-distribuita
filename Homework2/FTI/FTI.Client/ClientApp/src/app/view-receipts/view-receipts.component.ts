@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { Message } from 'primeng/api';
-import { ConvertReceiptService } from '../services/convert-receipt.service';
-import { ReceiptMessage } from 'src/models/ReceiptMessage';
+import { ConvertReceiptService } from '../../services/convert-receipt.service';
+import { NotificationMessage } from 'src/models/NotificationMessage';
+import { environment } from 'src/environments/environment';
+import { NotificationService } from 'src/services/notification.service';
 
 @Component({
   selector: 'app-view-receipts',
@@ -12,38 +14,24 @@ import { ReceiptMessage } from 'src/models/ReceiptMessage';
 
 export class ViewReceiptsComponent implements OnInit {
 
-  constructor(public convertService: ConvertReceiptService) { }
+  constructor(public conversionService: ConvertReceiptService, private notificationService: NotificationService) { }
   
-  messages: Message[] = [];
-  jsonMessages :ReceiptMessage[] = [];
-  xmlMessages :ReceiptMessage[] = [];
-  ptMessages :ReceiptMessage[] = [];
-  messageType: string;
-  productionUrl: string;
-  serverUrl: string;
-  private _hubConnection: HubConnection;
-
+  jsonMessages :NotificationMessage[] = [];
+  xmlMessages :NotificationMessage[] = [];
+  ptMessages :NotificationMessage[] = [];
+  
   ngOnInit() {
-    this.productionUrl = "https://ftiapi.azurewebsites.net/notify";
-    this.serverUrl = "http://localhost:5000/notify";
-    this._hubConnection = new HubConnectionBuilder().withUrl(this.productionUrl).build();
-    this._hubConnection
-      .start()
-      .then(() => console.log('Connection started!'))
-      .catch(err => console.log('Error while establishing connection :('));
-
-    this._hubConnection.on('BroadcastMessage', (type: string, payload: string, id: string) => {
-      console.log(payload);
-      this.messages.push({ severity: type, summary: payload, id: id });
-
-      this.convertService.convertReceipt(new ReceiptMessage(payload,"Xml", id)).subscribe(x =>{
-        this.xmlMessages.push(new ReceiptMessage(x.payload, x.type, x.id))
+    this.notificationService.hubConnection.on('BroadcastMessage', (type: string, payload: string, id: string) => {
+      this.conversionService.convertReceipt(new NotificationMessage(payload,"Xml", id)).subscribe(x =>{
+        this.xmlMessages.push(new NotificationMessage(x.payload, x.type, x.id))
       });
-      this.convertService.convertReceipt(new ReceiptMessage(payload,"Json", id)).subscribe(x =>{
-        this.jsonMessages.push(new ReceiptMessage(x.payload, x.type, x.id))
+
+      this.conversionService.convertReceipt(new NotificationMessage(payload,"Json", id)).subscribe(x =>{
+        this.jsonMessages.push(new NotificationMessage(x.payload, x.type, x.id))
       });
-      this.convertService.convertReceipt(new ReceiptMessage(payload,"PlainText", id)).subscribe(x =>{
-        this.ptMessages.push(new ReceiptMessage(x.payload, x.type, x.id))
+
+      this.conversionService.convertReceipt(new NotificationMessage(payload,"PlainText", id)).subscribe(x =>{
+        this.ptMessages.push(new NotificationMessage(x.payload, x.type, x.id))
       });
     });
   }

@@ -53,7 +53,7 @@
   </Target>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="echo &quot;Angular build started&quot;&#xD;&#xA;cd $(ProjectDir)/ClientApp&#xD;&#xA;ng build --prod&#xD;&#xA;&#xD;&#xA;" />
+    <Exec Command="echo &quot;Angular build started&quot;&#xD;&#xA;cd $(ProjectDir)/ClientApp&#xD;&#xA;ng build --prod&#xD;&#xA;" />
   </Target>
 
 </Project>

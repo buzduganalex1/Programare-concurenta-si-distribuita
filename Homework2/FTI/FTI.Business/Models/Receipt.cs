@@ -5,10 +5,9 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using FTI.ConversionFunction;
 using Newtonsoft.Json;
 
-namespace FIT.ConversionFunctionAnnonymous
+namespace FTI.Business.Models
 {
     public class Receipt
     {

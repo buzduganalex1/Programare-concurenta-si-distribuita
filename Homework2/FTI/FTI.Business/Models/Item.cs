@@ -1,4 +1,4 @@
-﻿namespace FTI.Api.Models
+﻿namespace FTI.Business.Models
 {
     public class Item
     {

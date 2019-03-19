@@ -2,15 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {Receipt} from '../../models/Receipt'
 import { Item } from 'src/models/Item';
 import { Amount } from 'src/models/Amount';
-import { ReceiptService } from '../services/receipt.service';
+import { ReceiptService } from '../../services/receipt.service';
 
 @Component({
-  selector: 'app-receipt-viewer',
-  templateUrl: './receipt-viewer.component.html',
-  styleUrls: ['./receipt-viewer.component.css']
+  selector: 'app-create-receipts',
+  templateUrl: './create-receipts.component.html',
+  styleUrls: ['./create-receipts.component.css']
 })
-export class ReceiptViewerComponent implements OnInit {
-
+export class CreateReceiptsComponent implements OnInit {
   public items: Item[] = [
     new Item("Milk", new Amount("EUR",3)),    
     new Item("Salt", new Amount("EUR",1)),
@@ -41,4 +40,3 @@ export class ReceiptViewerComponent implements OnInit {
     this.showButton = false;
   }
 }
-

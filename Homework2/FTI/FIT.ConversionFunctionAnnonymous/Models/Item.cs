@@ -1,6 +1,4 @@
-﻿using FTI.ConversionFunction;
-
-namespace FIT.ConversionFunctionAnnonymous
+﻿namespace FTI.ConversionFunction.Models
 {
     public class Item
     {

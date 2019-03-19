@@ -16,8 +16,7 @@ namespace FTI.Api
         }
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -27,8 +26,8 @@ namespace FTI.Api
             var corsBuilder = new CorsPolicyBuilder();
             corsBuilder.AllowAnyHeader();
             corsBuilder.AllowAnyMethod();
-            corsBuilder.AllowAnyOrigin(); // For anyone access.
-            corsBuilder.WithOrigins("http://localhost:6001", "https://fticlient.azurewebsites.net"); // for a specific url. Don't add a forward slash on the end!
+            corsBuilder.AllowAnyOrigin(); 
+            corsBuilder.WithOrigins("http://localhost:6001", "https://fticlient.azurewebsites.net", "http://localhost:4200");
             corsBuilder.AllowCredentials();
 
             services.AddCors(options =>

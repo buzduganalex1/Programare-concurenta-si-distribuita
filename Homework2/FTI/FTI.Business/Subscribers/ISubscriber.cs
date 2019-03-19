@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace FTI.Subscribers.Subscribers
+namespace FTI.Business.Subscribers
 {
     public interface ISubscriber
     {

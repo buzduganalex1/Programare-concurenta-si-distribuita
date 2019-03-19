@@ -1,8 +1,5 @@
-﻿using System;
-using FTI.Api.Models;
-using FTI.Business;
+﻿using FTI.Business.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 
 namespace FTI.Api.Controllers
@@ -10,13 +7,6 @@ namespace FTI.Api.Controllers
     [Route("api/message")]
     public class MessageController : Controller
     {
-        private readonly IHubContext<NotifyHub, ITypedHubClient> _hubContext;
-
-        public MessageController(IHubContext<NotifyHub, ITypedHubClient> hubContext)
-        {
-            _hubContext = hubContext;
-        }
-
         [HttpGet]
         public IActionResult Get()
         {
@@ -24,12 +14,10 @@ namespace FTI.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Message> Post([FromBody] Message message)
+        public ActionResult<Message> ConvertMessage([FromBody] Message message)
         {
             var receipt = JsonConvert.DeserializeObject<Receipt>(message.Payload);
             
-            Console.WriteLine(message);
-
             switch (message.Type)
             {
                 case "Json":
@@ -43,18 +31,7 @@ namespace FTI.Api.Controllers
                     return Ok(message);
             }
 
-            Console.WriteLine(message.Payload);
-
             return Ok(message);
         }
-    }
-
-    public class Message
-    {
-        public string Id {get;set;}
-
-        public string Type { get; set; }
-
-        public string Payload { get; set; }
     }
 }

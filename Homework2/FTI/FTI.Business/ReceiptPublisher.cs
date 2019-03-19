@@ -5,19 +5,33 @@ namespace FTI.Business
 {
     public class ReceiptPublisher : IPublisher
     {
-        const string projectId = "friendly-path-234919";
-        const string topicId = "ticketsTopic";
-        
         public void PublishMessage(string message)
         {
-            try{
-                TopicName topicName = new TopicName(projectId, topicId);
-
+            try
+            {
+                var topicName = new TopicName(EnvResources.ProjectId, EnvResources.TopicId);
                 var publisher = PublisherClient.CreateAsync(topicName).Result;
                 var messageId = publisher.PublishAsync(message).Result;
-                
+
                 publisher.ShutdownAsync(TimeSpan.FromSeconds(15));
-            }catch(Exception e){
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void CreateTopic()
+        {
+            try
+            {
+                var publisherService = PublisherServiceApiClient.CreateAsync().Result;
+                var topicName = new TopicName(EnvResources.ProjectId, EnvResources.TopicId);
+
+                publisherService.CreateTopic(topicName);
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
             }
         }

@@ -1,14 +1,15 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using FTI.ConversionFunction.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
 using Newtonsoft.Json;
 
-namespace FIT.ConversionFunctionAnnonymous
+namespace FTI.ConversionFunction
 {
-    public static class Function2
+    public static class ConversionFunction
     {
         [FunctionName("Function2")]
         public static async Task<HttpResponseMessage> Run(
@@ -17,13 +18,10 @@ namespace FIT.ConversionFunctionAnnonymous
         {
             log.Info("C# HTTP trigger function processed a request.");
 
-            // Get request body
-            string data = req.Content.ReadAsStringAsync().Result;
-
+            var data = req.Content.ReadAsStringAsync().Result;
             var message = JsonConvert.DeserializeObject<Message>(data);
-            
             var receipt = JsonConvert.DeserializeObject<Receipt>(message.Payload);
-            
+
             switch (message.Type)
             {
                 case "Json":
@@ -38,16 +36,6 @@ namespace FIT.ConversionFunctionAnnonymous
             }
 
             return req.CreateResponse(HttpStatusCode.OK, message);
-        }
-
-
-        public class Message
-        {
-            public string Id { get; set; }
-
-            public string Type { get; set; }
-
-            public string Payload { get; set; }
         }
     }
 }
