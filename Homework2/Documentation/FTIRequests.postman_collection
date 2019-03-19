@@ -1,0 +1,145 @@
+{
+	"info": {
+		"_postman_id": "6c7fcacc-5115-4124-86ab-a728f8aa96f4",
+		"name": "FTI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PublishReceipt",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"CustomerNumber\":\"123\",\r\n   \"Items\":[  \r\n      {  \r\n         \"Description\":\"Milk\",\r\n         \"Price\":{  \r\n            \"Currency\":\"EUR\",\r\n            \"Value\":10.0\r\n         }\r\n      },\r\n      {  \r\n         \"Description\":\"Egs\",\r\n         \"Price\":{  \r\n            \"Currency\":\"EUR\",\r\n            \"Value\":5.0\r\n         }\r\n      },\r\n      {  \r\n         \"Description\":\"Honey\",\r\n         \"Price\":{  \r\n            \"Currency\":\"EUR\",\r\n            \"Value\":2.0\r\n         }\r\n      }\r\n   ],\r\n   \"Total\":{  \r\n      \"Currency\":\"EUR\",\r\n      \"Value\":17.0\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{Host}}/api/receipt",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"receipt"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetReceipt",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Host}}/api/receipt",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"receipt"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Notify",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Type\":\"test\",\n\t\"Payload\":\"test\"\n}"
+				},
+				"url": {
+					"raw": "{{Host}}/notify",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"notify"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Convert",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"Type\":\"Xml\",\r\n\t\"Payload\":\"{\\\"CustomerNumber\\\":\\\"123\\\",\\\"Items\\\":[{\\\"Description\\\":\\\"Milk\\\",\\\"Price\\\":{\\\"Currency\\\":\\\"EUR\\\",\\\"Value\\\":10.0}},{\\\"Description\\\":\\\"Egs\\\",\\\"Price\\\":{\\\"Currency\\\":\\\"EUR\\\",\\\"Value\\\":5.0}},{\\\"Description\\\":\\\"Honey\\\",\\\"Price\\\":{\\\"Currency\\\":\\\"EUR\\\",\\\"Value\\\":2.0}}],\\\"Total\\\":{\\\"Currency\\\":\\\"EUR\\\",\\\"Value\\\":17.0}}\"\r\n}"
+				},
+				"url": {
+					"raw": "{{Host}}/api/message",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"message"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ConvertFunction",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"Type\":\"Xml\",\r\n\t\"Payload\":\"{\\\"CustomerNumber\\\":\\\"123\\\",\\\"Items\\\":[{\\\"Description\\\":\\\"Milk\\\",\\\"Price\\\":{\\\"Currency\\\":\\\"EUR\\\",\\\"Value\\\":10.0}},{\\\"Description\\\":\\\"Egs\\\",\\\"Price\\\":{\\\"Currency\\\":\\\"EUR\\\",\\\"Value\\\":5.0}},{\\\"Description\\\":\\\"Honey\\\",\\\"Price\\\":{\\\"Currency\\\":\\\"EUR\\\",\\\"Value\\\":2.0}}],\\\"Total\\\":{\\\"Currency\\\":\\\"EUR\\\",\\\"Value\\\":17.0}}\"\r\n}"
+				},
+				"url": {
+					"raw": "{{FunctionUrl}}",
+					"host": [
+						"{{FunctionUrl}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
