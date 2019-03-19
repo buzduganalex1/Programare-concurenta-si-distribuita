@@ -1,9 +1,18 @@
 # Homework 2 - FTI (Fast Ticket Interpreter)
 
-## Server
+Application Server: https://ftiapi.azurewebsites.net/
+
+Azure Function: https://fti-conversion.azurewebsites.net/api/Function2?code=BLytKhxIwTXiT/ZWhte2dQzRxI54HwjHaNU/3B1a4TYKlKVU7EwJAg== 
+
+Application Client:
+
+- https://fticlient.azurewebsites.net/receipts - view receipts
+- https://fticlient.azurewebsites.net/receipts/create - create receipts
+
+## Description
+------------------------
 
 We want to create a retail application using google Pub/Sub api.
-
 A publisher will write receipts in a topic in a json format.
 
 Subscribers:
@@ -12,26 +21,13 @@ Subscribers:
 - A subsciber will read the tickets and do a interpretation on it
 - A subscriber will archive the tickets
 
-## Client
+Client will be a PWA. Using websockets data about tickets will be updated real time on the mobile app.
+On the client we will be able to create ticket and receive a copy through a websocket. A Faas will convert the receipt in xml.
 
-Client will be a PWA.
+## Implementation details
+---------------------------
 
-Using websockets data about tickets will be updated real time on the mobile app.
-
-On the client we will be able to create ticket and receive a copy through a websocket.
-
-A faas will convert the receipt in xml.
-
-## Prequisites
-
-Starting the server
-```bash 
-cd C:\GitRepositories\Programare-concurenta-si-distribuita\Homework2\FTI\FTI.Api && dotnet watch run
-```
-
-# Implementation details
-
-## Models
+### Models
 
 The application is centered around receipts. We want the simplest receipt.
 
@@ -73,10 +69,48 @@ The application is centered around receipts. We want the simplest receipt.
 
 WebSocket is a computer communications protocol, providing full-duplex communication channels over a single TCP connection. The WebSocket protocol was standardized by the IETF as RFC 6455 in 2011, and the WebSocket API in Web IDL is being standardized by the W3C.
 
+### Cors
+-----------------------
+To use websocket we have to enable cors so we can receive requests to open the tcp connection from our client.
+
+```c#
+var corsBuilder = new CorsPolicyBuilder();
+      corsBuilder.AllowAnyHeader();
+      corsBuilder.AllowAnyMethod();
+      corsBuilder.AllowAnyOrigin(); 
+      corsBuilder.WithOrigins("http://localhost:6001", "https://fticlient.azurewebsites.net", "http://localhost:4200");
+      corsBuilder.AllowCredentials();
+
+      services.AddCors(options =>
+      {
+            options.AddPolicy("CorsPolicy", corsBuilder.Build());
+      });
+```
+
 ### Signal R
 
-### Cors
+We use Signal R for opening a websocket and notifying the client when we receive a receipt.
 
+Server
+```c#
+app.UseSignalR(routes => { routes.MapHub<NotifyHub>("/notify"); });
+```
+
+Client
+```js
+constructor() { 
+   this.hubConnection = new HubConnectionBuilder().withUrl(environment.host + "/notify").build();
+   this.hubConnection
+   .start()
+   .then(() => console.log('Connection started!'))
+   .catch(err => console.log('Error while establishing connection :('));
+}
+
+this.notificationService.hubConnection.on('BroadcastMessage', (type: string, payload: string, id: string) => {
+   this.conversionService.convertReceipt(new NotificationMessage(payload,"Xml", id)).subscribe(x =>{
+      this.xmlMessages.push(new NotificationMessage(x.payload, x.type, x.id))
+});
+```
 ## Google Pub/Sub
 --------------
 
