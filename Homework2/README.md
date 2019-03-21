@@ -240,3 +240,4 @@ Cluster with 1 node where we deployed the financial service.
 
 - https://medium.com/@rukshandangalla/how-to-notify-your-angular-5-app-using-signalr-5e5aea2030b2 
 - https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.2 
+- https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-tutorial-create-dotnet-app
