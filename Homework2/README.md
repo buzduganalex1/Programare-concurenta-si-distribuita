@@ -232,7 +232,7 @@ public async Task<ActionResult<IEnumerable<string>>> Get()
 Cluster with 1 node where we deployed the financial service.
 
 <img src="Documentation/FabricServicesCluster.png"
-     alt="Markdown Monster icon"
+     alt="Cluster image"
      style="float: left; margin-right: 10px;" />
 
 ## Resources
