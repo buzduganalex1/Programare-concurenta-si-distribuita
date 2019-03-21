@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using FTI.Business;
 using FTI.Business.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +14,7 @@ namespace FTI.Api.Controllers
     {
         private readonly IPublisher messagePublisher;
         private readonly IHubContext<NotifyHub, ITypedHubClient> messageHubContext;
-
+        
         public ReceiptController(IPublisher messagePublisher, IHubContext<NotifyHub, ITypedHubClient> messageHubContext)
         {
             this.messagePublisher = messagePublisher;
@@ -42,9 +44,31 @@ namespace FTI.Api.Controllers
                 Payload = receipt.ToJson()
             };
 
+            NotifyFinancialSistem(receipt);
+            
             messageHubContext.Clients.All.BroadcastMessage(message.Type, message.Payload, message.Id);
 
             this.messagePublisher.PublishMessage(receipt.ToJson());
+        }
+
+        private static void NotifyFinancialSistem(Receipt receipt)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Post, EnvResources.FinancialServiceUrl);
+
+                    request.Content = new StringContent(receipt.ToJson());
+                    request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                    var result = client.SendAsync(request).Result;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 }

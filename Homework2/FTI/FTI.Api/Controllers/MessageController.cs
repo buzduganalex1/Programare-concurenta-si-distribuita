@@ -1,4 +1,8 @@
-﻿using FTI.Business.Models;
+﻿using System;
+using System.Linq;
+using System.Net.Http;
+using FTI.Business;
+using FTI.Business.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -10,14 +14,34 @@ namespace FTI.Api.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok("Hello");
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Get, EnvResources.FinancialServiceUrl);
+
+                    var result = client.SendAsync(request).Result;
+
+                    var stringResult = result.Content.ReadAsStringAsync().Result;
+
+                    var objectResult = JsonConvert.DeserializeObject<TotalReceiptResponse[]>(stringResult);
+
+                    return Ok(objectResult.First());
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return Ok();
         }
 
         [HttpPost]
         public ActionResult<Message> ConvertMessage([FromBody] Message message)
         {
             var receipt = JsonConvert.DeserializeObject<Receipt>(message.Payload);
-            
+
             switch (message.Type)
             {
                 case "Json":
@@ -33,5 +57,12 @@ namespace FTI.Api.Controllers
 
             return Ok(message);
         }
+    }
+
+    class TotalReceiptResponse
+    {
+        public string key { get; set; }
+
+        public string value { get; set; }
     }
 }

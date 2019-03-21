@@ -19,7 +19,8 @@ export class ViewReceiptsComponent implements OnInit {
   jsonMessages :NotificationMessage[] = [];
   xmlMessages :NotificationMessage[] = [];
   ptMessages :NotificationMessage[] = [];
-  
+  totalEarnings :string;
+
   ngOnInit() {
     this.notificationService.hubConnection.on('BroadcastMessage', (type: string, payload: string, id: string) => {
       this.conversionService.convertReceipt(new NotificationMessage(payload,"Xml", id)).subscribe(x =>{
@@ -33,6 +34,10 @@ export class ViewReceiptsComponent implements OnInit {
       this.conversionService.convertReceipt(new NotificationMessage(payload,"PlainText", id)).subscribe(x =>{
         this.ptMessages.push(new NotificationMessage(x.payload, x.type, x.id))
       });
+
+      this.conversionService.getTotalEarnings().subscribe(x => {
+        this.totalEarnings = x.value
+      })
     });
   }
 }
