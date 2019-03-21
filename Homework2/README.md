@@ -182,6 +182,59 @@ Body:
 Execute the FTI.Subscribers -- This will launch 3 subscribers that will receive a copy of the published receipt. 
 ```
 
+## Azure Fabric Services
+
+Documentation : https://azure.microsoft.com/en-us/services/service-fabric/ 
+
+We used azure fabric services for creating a statefull service that calculates the total earnings from all our sales. Being a statefull service it persists data, so each receipt we make we send to this service and we save the amount.
+
+```c#
+[HttpPost]
+public async Task<IActionResult> Post([FromBody] Receipt value)
+{
+   IReliableDictionary<string, float> votesDictionary = await this.stateManager.GetOrAddAsync<IReliableDictionary<string, float>>("total");
+
+   using (ITransaction tx = this.stateManager.CreateTransaction())
+   {
+         await votesDictionary.AddOrUpdateAsync(tx, "TotalValue", value.Total.Value, (key, oldvalue) => oldvalue + value.Total.Value);
+         await tx.CommitAsync();
+   }
+
+   return new OkResult();
+}
+```
+
+```c#
+[HttpGet]
+public async Task<ActionResult<IEnumerable<string>>> Get()
+{
+   CancellationToken ct = new CancellationToken();
+
+   IReliableDictionary<string, float> votesDictionary = await this.stateManager.GetOrAddAsync<IReliableDictionary<string, float>>("total");
+
+   using (ITransaction tx = this.stateManager.CreateTransaction())
+   {
+         Microsoft.ServiceFabric.Data.IAsyncEnumerable<KeyValuePair<string, float>> list = await votesDictionary.CreateEnumerableAsync(tx);
+
+         Microsoft.ServiceFabric.Data.IAsyncEnumerator<KeyValuePair<string, float>> enumerator = list.GetAsyncEnumerator();
+
+         List<KeyValuePair<string, float>> result = new List<KeyValuePair<string, float>>();
+
+         while (await enumerator.MoveNextAsync(ct))
+         {
+            result.Add(enumerator.Current);
+         }
+
+         return Ok(result);
+   }  
+}
+```
+Cluster with 1 node where we deployed the financial service.
+
+<img src="Documentation/FabricServicesCluster.png"
+     alt="Markdown Monster icon"
+     style="float: left; margin-right: 10px;" />
+
 ## Resources
 -------------
 
