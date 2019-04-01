@@ -59,7 +59,9 @@ Hyperledger Fabric is one of the blockchain projects within Hyperledger. Like ot
 
 Where Hyperledger Fabric breaks from some other blockchain systems is that it is private and permissioned. Rather than an open permissionless system that allows unknown identities to participate in the network (requiring protocols like “proof of work” to validate transactions and secure the network), the members of a Hyperledger Fabric network enroll through a trusted Membership Service Provider (MSP).
 
-Hyperledger fabric capabilities 
+Hyperledger fabric capabilities:
+
+https://docs.google.com/presentation/d/1sM18O4OJASJH_QdXBvqwxRzGSdO-RqDjXDqpDKGraOE/edit#slide=id.g3b1d3e2847_0_113 
 
 ### Hyperledger Indy (https://github.com/hyperledger/indy-node#how-to-contribute0)
 --------------------
