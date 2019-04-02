@@ -29,7 +29,9 @@ Tools:
 -------------------
 Hyperledger Fabric is a platform for distributed ledger solutions underpinned by a modular architecture delivering high degrees of confidentiality, resiliency, flexibility, and scalability. It is designed to support pluggable implementations of different components and accommodate the complexity and intricacies that exist across the economic ecosystem.
 
-[Hyperledger Fabric video](https://github.com/buzduganalex1/Programare-concurenta-si-distribuita/blob/master/Homework5/documentation/2019-04-01%2010-29-19.mkv)
+- [Hyperledger Fabric video](https://github.com/buzduganalex1/Programare-concurenta-si-distribuita/blob/master/Homework5/documentation/2019-04-01%2010-29-19.mkv)
+
+- [Hyperledger Fabric samples](https://github.com/buzduganalex1/HyperledgerFabricNetwork)
 
 #### Key concepts
 
@@ -63,7 +65,7 @@ Hyperledger Fabric is one of the blockchain projects within Hyperledger. Like ot
 
 Where Hyperledger Fabric breaks from some other blockchain systems is that it is private and permissioned. Rather than an open permissionless system that allows unknown identities to participate in the network (requiring protocols like “proof of work” to validate transactions and secure the network), the members of a Hyperledger Fabric network enroll through a trusted Membership Service Provider (MSP).
 
-[How to install Fabric](https://www.youtube.com/watch?v=7BeJ6MSKH9k)
+- [How to install Fabric](https://www.youtube.com/watch?v=7BeJ6MSKH9k)
 
 ### [Hyperledger Indy](https://github.com/hyperledger/indy-node#how-to-contribute0)
 --------------------
@@ -82,4 +84,4 @@ For an example of a business network in action; a realtor can quickly model thei
 
 Participants can have their access to transactions restricted based on their role as either a buyer, seller, or realtor. The realtor can then create an application to present buyers and sellers with a simple user interface for viewing open listings and making offers. This business network could also be integrated with existing inventory system, adding new houses as assets and removing sold properties. Relevant other parties can be registered as participants, for example a land registry might interact with a buyer to transfer ownership of the land.
 
-[Hyperledger Composer video](https://github.com/buzduganalex1/Programare-concurenta-si-distribuita/blob/master/Homework5/documentation/2019-04-01%2010-29-19.mkv)
+- [Hyperledger Composer video](https://github.com/buzduganalex1/Programare-concurenta-si-distribuita/blob/master/Homework5/documentation/2019-04-01%2010-29-19.mkv)
