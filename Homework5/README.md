@@ -1,5 +1,7 @@
 # Hyperledger presentation
 
+## [Google Slides presentation ](https://docs.google.com/presentation/d/1sM18O4OJASJH_QdXBvqwxRzGSdO-RqDjXDqpDKGraOE/edit?usp=sharing )
+
 ## Description 
 Hyperledger is a company developing Business Blockchain Frameworks and Tools that help developers to create blockchain applications.
 
@@ -23,9 +25,11 @@ Tools:
 
 ## Points of interest
 
-### Hyperledger Fabric(https://hyperledger-fabric.readthedocs.io/en/release-1.4/)
+### [Hyperledger Fabric](https://hyperledger-fabric.readthedocs.io/en/release-1.4/)
 -------------------
 Hyperledger Fabric is a platform for distributed ledger solutions underpinned by a modular architecture delivering high degrees of confidentiality, resiliency, flexibility, and scalability. It is designed to support pluggable implementations of different components and accommodate the complexity and intricacies that exist across the economic ecosystem.
+
+[Hyperledger Fabric video](https://github.com/buzduganalex1/Programare-concurenta-si-distribuita/blob/master/Homework5/documentation/2019-04-01%2010-29-19.mkv)
 
 #### Key concepts
 
@@ -59,14 +63,10 @@ Hyperledger Fabric is one of the blockchain projects within Hyperledger. Like ot
 
 Where Hyperledger Fabric breaks from some other blockchain systems is that it is private and permissioned. Rather than an open permissionless system that allows unknown identities to participate in the network (requiring protocols like “proof of work” to validate transactions and secure the network), the members of a Hyperledger Fabric network enroll through a trusted Membership Service Provider (MSP).
 
-Hyperledger fabric capabilities:
-
-https://docs.google.com/presentation/d/1sM18O4OJASJH_QdXBvqwxRzGSdO-RqDjXDqpDKGraOE/edit#slide=id.g3b1d3e2847_0_113 
-
-### Hyperledger Indy (https://github.com/hyperledger/indy-node#how-to-contribute0)
+### [Hyperledger Indy](https://github.com/hyperledger/indy-node#how-to-contribute0)
 --------------------
 
-### Hyperledger Composer (https://hyperledger.github.io/composer/latest/)
+### [Hyperledger Composer](https://hyperledger.github.io/composer/latest/)
 
 Hyperledger Composer is an extensive, open development toolset and framework to make developing blockchain applications easier. Our primary goal is to accelerate time to value, and make it easier to integrate your blockchain applications with the existing business systems. You can use Composer to rapidly develop use cases and deploy a blockchain solution in weeks rather than months. Composer allows you to model your business network and integrate existing systems and data with your blockchain applications.
 
@@ -79,3 +79,5 @@ For an example of a business network in action; a realtor can quickly model thei
 - __Transactions__: buying or selling houses, and creating and closing listings
 
 Participants can have their access to transactions restricted based on their role as either a buyer, seller, or realtor. The realtor can then create an application to present buyers and sellers with a simple user interface for viewing open listings and making offers. This business network could also be integrated with existing inventory system, adding new houses as assets and removing sold properties. Relevant other parties can be registered as participants, for example a land registry might interact with a buyer to transfer ownership of the land.
+
+[Hyperledger Composer video](https://github.com/buzduganalex1/Programare-concurenta-si-distribuita/blob/master/Homework5/documentation/2019-04-01%2010-29-19.mkv)
